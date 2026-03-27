@@ -43,7 +43,7 @@ export default function App() {
             className={`nav-item${activeTab === item.id ? " active" : ""}`}
             onClick={() => setActiveTab(item.id)}
           >
-            <div className="nav-icon-wrap">{item.icon}</div>
+            <div className="nav-icon">{item.icon}</div>
             <div className="nav-label">{item.label}</div>
           </div>
         ))}
