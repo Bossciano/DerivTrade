@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Bookmark, Share2, TrendingUp, TrendingDown } from "lucide-react";
 
 const TIMEFRAMES = ["1m", "5m", "15m", "1h", "4h", "1D"];
 const STAKES = ["$5", "$10", "$25", "$50", "MAX"];
@@ -9,7 +10,7 @@ const candles: [number, number, number, boolean?][] = [
   [70,107,14,true],[82,80,28],[94,68,18],[106,76,16,true],
   [118,58,22],[130,70,14,true],[142,50,24],[154,44,18]
 ];
-const indicators = ["EMA 20 ●", "RSI ●", "MACD", "BB", "SMA 50", "+ Add"];
+const indicators = ["EMA 20", "RSI", "MACD", "BB", "SMA 50", "+ Add"];
 
 interface Props { onNavigate: (tab: string) => void }
 
@@ -28,15 +29,18 @@ export default function ChartScreen({ onNavigate }: Props) {
       {/* Header */}
       <div style={{ padding: "12px 16px 0", display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div>
-          <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 18, fontWeight: 800, color: "var(--text)" }}>
-            EUR/USD <span style={{ fontSize: 12, color: "var(--sub)", fontWeight: 400 }}>OTC</span>
+          <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 18, fontWeight: 800, color: "var(--text)", display: "flex", alignItems: "center", gap: 8 }}>
+            EUR/USD
+            <span style={{ fontSize: 11, color: "var(--sub)", fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }}>OTC</span>
           </div>
           <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 22, fontWeight: 700, color: "var(--brand)", marginTop: 2 }}>1.08521</div>
-          <div style={{ fontSize: 12, color: "var(--brand)", fontFamily: "'Space Mono', monospace" }}>▲ +0.00124 (+0.12%)</div>
+          <div style={{ fontSize: 12, color: "var(--brand)", fontFamily: "'Space Mono', monospace", display: "flex", alignItems: "center", gap: 4 }}>
+            <TrendingUp size={12} strokeWidth={2.5} /> +0.00124 (+0.12%)
+          </div>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          {["📌", "↗️"].map((icon, i) => (
-            <div key={i} style={{ width: 32, height: 32, background: "var(--card2)", border: "1px solid var(--border)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, cursor: "pointer" }}>{icon}</div>
+          {[<Bookmark key="b" size={15} color="var(--sub)" strokeWidth={1.8} />, <Share2 key="s" size={15} color="var(--sub)" strokeWidth={1.8} />].map((icon, i) => (
+            <div key={i} style={{ width: 32, height: 32, background: "var(--card2)", border: "1px solid var(--border)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>{icon}</div>
           ))}
         </div>
       </div>
@@ -62,9 +66,9 @@ export default function ChartScreen({ onNavigate }: Props) {
           ))}
           <path d={areaPath} fill="url(#areaGradDark)" />
           <path d={chartPath} fill="none" stroke="var(--brand)" strokeWidth="2" />
-          <g opacity="0.8">
+          <g opacity="0.85">
             {candles.map(([x, y, h, red], i) => (
-              <rect key={i} x={x} y={y} width="7" height={h} rx="1.5" fill={red ? "var(--red)" : "var(--brand)"} opacity="0.85" />
+              <rect key={i} x={x} y={y} width="7" height={h} rx="1.5" fill={red ? "var(--red)" : "var(--brand)"} />
             ))}
           </g>
           <line x1="210" y1="0" x2="210" y2="180" stroke="rgba(0,229,176,0.3)" strokeWidth="1" strokeDasharray="3 3" />
@@ -77,22 +81,30 @@ export default function ChartScreen({ onNavigate }: Props) {
       {/* Indicators */}
       <div style={{ display: "flex", gap: 8, padding: "10px 16px", overflowX: "auto", scrollbarWidth: "none" }}>
         {indicators.map((ind, i) => (
-          <div key={i} style={{ background: "var(--card)", border: `1px solid ${i < 2 ? "var(--brand)" : "var(--border)"}`, borderRadius: 20, padding: "5px 12px", fontSize: 11, fontFamily: "'Syne', sans-serif", fontWeight: 700, color: i < 2 ? "var(--brand)" : "var(--sub)", whiteSpace: "nowrap" }}>{ind}</div>
+          <div key={i} style={{ background: "var(--card)", border: `1px solid ${i < 2 ? "var(--brand)" : "var(--border)"}`, borderRadius: 20, padding: "5px 12px", fontSize: 11, fontFamily: "'Syne', sans-serif", fontWeight: 700, color: i < 2 ? "var(--brand)" : "var(--sub)", whiteSpace: "nowrap", display: "flex", alignItems: "center", gap: 5 }}>
+            {i < 2 && <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--brand)", display: "inline-block" }} />}
+            {ind}
+          </div>
         ))}
       </div>
 
       {/* Trade result toast */}
       {tradeResult && (
-        <div style={{ margin: "0 16px 10px", padding: "12px 16px", background: tradeResult.type === "Rise" ? "rgba(0,229,176,0.12)" : "rgba(255,77,106,0.12)", border: `1px solid ${tradeResult.type === "Rise" ? "rgba(0,229,176,0.3)" : "rgba(255,77,106,0.3)"}`, borderRadius: 12, textAlign: "center", fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 700, color: tradeResult.type === "Rise" ? "var(--brand)" : "var(--red)" }}>
-          {tradeResult.type === "Rise" ? "▲" : "▼"} {tradeResult.type} order placed! Stake: {stake}
+        <div style={{ margin: "0 16px 10px", padding: "12px 16px", background: tradeResult.type === "Rise" ? "rgba(0,229,176,0.12)" : "rgba(255,77,106,0.12)", border: `1px solid ${tradeResult.type === "Rise" ? "rgba(0,229,176,0.3)" : "rgba(255,77,106,0.3)"}`, borderRadius: 12, textAlign: "center", fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 700, color: tradeResult.type === "Rise" ? "var(--brand)" : "var(--red)", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+          {tradeResult.type === "Rise" ? <TrendingUp size={16} strokeWidth={2.5} /> : <TrendingDown size={16} strokeWidth={2.5} />}
+          {tradeResult.type} order placed! Stake: {stake}
         </div>
       )}
 
       {/* Trade Panel */}
       <div style={{ margin: "0 16px 12px", background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, padding: 16 }}>
         <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
-          <div style={{ flex: 1, padding: 8, borderRadius: 10, fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 700, textAlign: "center", cursor: "pointer", background: "rgba(0,229,176,0.12)", color: "var(--brand)", border: "1px solid rgba(0,229,176,0.3)" }}>▲ Rise</div>
-          <div style={{ flex: 1, padding: 8, borderRadius: 10, fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 700, textAlign: "center", cursor: "pointer", background: "rgba(255,77,106,0.12)", color: "var(--red)", border: "1px solid rgba(255,77,106,0.3)" }}>▼ Fall</div>
+          <div style={{ flex: 1, padding: 8, borderRadius: 10, fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 700, textAlign: "center", cursor: "pointer", background: "rgba(0,229,176,0.12)", color: "var(--brand)", border: "1px solid rgba(0,229,176,0.3)", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+            <TrendingUp size={14} strokeWidth={2.5} /> Rise
+          </div>
+          <div style={{ flex: 1, padding: 8, borderRadius: 10, fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 700, textAlign: "center", cursor: "pointer", background: "rgba(255,77,106,0.12)", color: "var(--red)", border: "1px solid rgba(255,77,106,0.3)", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+            <TrendingDown size={14} strokeWidth={2.5} /> Fall
+          </div>
         </div>
 
         <div style={{ marginBottom: 12 }}>
@@ -122,8 +134,12 @@ export default function ChartScreen({ onNavigate }: Props) {
         </div>
 
         <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
-          <button onClick={() => handleTrade("Rise")} style={{ flex: 1, padding: 13, background: "var(--brand)", color: "#000", border: "none", borderRadius: 12, fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 800, cursor: "pointer", boxShadow: "0 4px 24px var(--brand-glow)", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>▲ Rise</button>
-          <button onClick={() => handleTrade("Fall")} style={{ flex: 1, padding: 13, background: "var(--red)", color: "#fff", border: "none", borderRadius: 12, fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 800, cursor: "pointer", boxShadow: "0 4px 24px var(--red-glow)", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>▼ Fall</button>
+          <button onClick={() => handleTrade("Rise")} style={{ flex: 1, padding: 13, background: "var(--brand)", color: "#000", border: "none", borderRadius: 12, fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 800, cursor: "pointer", boxShadow: "0 4px 24px var(--brand-glow)", display: "flex", alignItems: "center", justifyContent: "center", gap: 7 }}>
+            <TrendingUp size={16} strokeWidth={2.5} /> Rise
+          </button>
+          <button onClick={() => handleTrade("Fall")} style={{ flex: 1, padding: 13, background: "var(--red)", color: "#fff", border: "none", borderRadius: 12, fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 800, cursor: "pointer", boxShadow: "0 4px 24px var(--red-glow)", display: "flex", alignItems: "center", justifyContent: "center", gap: 7 }}>
+            <TrendingDown size={16} strokeWidth={2.5} /> Fall
+          </button>
         </div>
       </div>
     </div>

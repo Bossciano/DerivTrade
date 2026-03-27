@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Bell, Settings2, TrendingUp, TrendingDown, Trophy, BarChart2, Wallet } from "lucide-react";
 
 const markets = [
   { sym: "EUR/USD", price: "1.08521", chg: "+0.12%", pos: true },
@@ -38,10 +39,12 @@ export default function HomeScreen() {
         </div>
         <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
           <div style={{ position: "relative", cursor: "pointer" }}>
-            <div style={{ width: 32, height: 32, background: "var(--card2)", border: "1px solid var(--border)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 15 }}>🔔</div>
-            <div style={{ position: "absolute", top: 6, right: 6, width: 6, height: 6, background: "var(--brand)", borderRadius: "50%", border: "1.5px solid var(--bg)" }} />
+            <div style={{ width: 34, height: 34, background: "var(--card2)", border: "1px solid var(--border)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Bell size={17} color="var(--sub)" strokeWidth={1.8} />
+            </div>
+            <div style={{ position: "absolute", top: 7, right: 7, width: 6, height: 6, background: "var(--brand)", borderRadius: "50%", border: "1.5px solid var(--bg)" }} />
           </div>
-          <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg, var(--brand), #00B8D9)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, fontWeight: 700, color: "#000", fontFamily: "'Syne', sans-serif", border: "1.5px solid var(--brand)", boxShadow: "0 0 12px var(--brand-glow)" }}>C</div>
+          <div style={{ width: 34, height: 34, borderRadius: "50%", background: "linear-gradient(135deg, var(--brand), #00B8D9)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 800, color: "#000", fontFamily: "'Syne', sans-serif", border: "1.5px solid var(--brand)", boxShadow: "0 0 12px var(--brand-glow)" }}>C</div>
         </div>
       </div>
 
@@ -53,23 +56,31 @@ export default function HomeScreen() {
           $2,<span style={{ color: "var(--brand)" }}>480</span>.00
         </div>
         <div style={{ fontSize: 12, color: "var(--sub)", display: "flex", alignItems: "center", gap: 6 }}>
-          Today's P&L
+          Today's P&amp;L
           <span style={{ background: "rgba(0,229,176,0.15)", color: "var(--brand)", padding: "2px 8px", borderRadius: 8, fontSize: 11, fontWeight: 600, fontFamily: "'Space Mono', monospace" }}>+$142.00</span>
           <span style={{ background: "rgba(0,229,176,0.15)", color: "var(--brand)", padding: "2px 8px", borderRadius: 8, fontSize: 11, fontWeight: 600, fontFamily: "'Space Mono', monospace" }}>+6.07%</span>
         </div>
         <div style={{ display: "flex", gap: 10, marginTop: 16 }}>
-          <button style={{ flex: 1, background: "var(--brand)", color: "#000", border: "none", borderRadius: 12, padding: 10, fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, boxShadow: "0 4px 20px var(--brand-glow)" }}>📈 Trade</button>
-          <button style={{ flex: 1, background: "rgba(255,255,255,0.06)", color: "var(--text)", border: "1px solid var(--border2)", borderRadius: 12, padding: 10, fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>⚙️ Manage</button>
+          <button style={{ flex: 1, background: "var(--brand)", color: "#000", border: "none", borderRadius: 12, padding: "10px 0", fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6, boxShadow: "0 4px 20px var(--brand-glow)" }}>
+            <TrendingUp size={15} strokeWidth={2.5} /> Trade
+          </button>
+          <button style={{ flex: 1, background: "rgba(255,255,255,0.06)", color: "var(--text)", border: "1px solid var(--border2)", borderRadius: 12, padding: "10px 0", fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+            <Settings2 size={15} strokeWidth={1.8} color="var(--sub)" /> Manage
+          </button>
         </div>
       </div>
 
       {/* Stats Row */}
       <div style={{ display: "flex", gap: 10, padding: "0 16px 16px" }}>
-        {[["🏆", "68%", "Win Rate", true], ["📊", "142", "Trades", false], ["💎", "$981", "Total P&L", true]].map(([icon, val, lbl, green], i) => (
+        {[
+          { Icon: Trophy, val: "68%", lbl: "Win Rate", green: true },
+          { Icon: BarChart2, val: "142", lbl: "Trades", green: false },
+          { Icon: Wallet, val: "$981", lbl: "Total P&L", green: true },
+        ].map(({ Icon, val, lbl, green }, i) => (
           <div key={i} style={{ flex: 1, background: "var(--card)", border: "1px solid var(--border)", borderRadius: 14, padding: "12px 10px", textAlign: "center" }}>
-            <div style={{ fontSize: 18, marginBottom: 4 }}>{icon as string}</div>
-            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 14, fontWeight: 700, color: green ? "var(--brand)" : "var(--text)", marginBottom: 2 }}>{val as string}</div>
-            <div style={{ fontSize: 10, color: "var(--sub)", fontFamily: "'Syne', sans-serif", fontWeight: 600 }}>{lbl as string}</div>
+            <Icon size={18} color={green ? "var(--brand)" : "var(--sub)"} strokeWidth={1.8} style={{ margin: "0 auto 6px" }} />
+            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 14, fontWeight: 700, color: green ? "var(--brand)" : "var(--text)", marginBottom: 2 }}>{val}</div>
+            <div style={{ fontSize: 10, color: "var(--sub)", fontFamily: "'Syne', sans-serif", fontWeight: 600 }}>{lbl}</div>
           </div>
         ))}
       </div>
@@ -81,7 +92,10 @@ export default function HomeScreen() {
           <div key={i} onClick={() => setActiveMarket(i)} style={{ background: activeMarket === i ? "rgba(0,229,176,0.08)" : "var(--card)", border: `1px solid ${activeMarket === i ? "var(--brand)" : "var(--border)"}`, borderRadius: 14, padding: "10px 14px", minWidth: 100, flexShrink: 0, cursor: "pointer" }}>
             <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 12, fontWeight: 700, color: "var(--text)", marginBottom: 2 }}>{m.sym}</div>
             <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: "var(--sub)", marginBottom: 4 }}>{m.price}</div>
-            <div style={{ fontSize: 11, fontWeight: 600, fontFamily: "'Space Mono', monospace", color: m.pos ? "var(--brand)" : "var(--red)" }}>{m.chg}</div>
+            <div style={{ fontSize: 11, fontWeight: 600, fontFamily: "'Space Mono', monospace", color: m.pos ? "var(--brand)" : "var(--red)", display: "flex", alignItems: "center", gap: 3 }}>
+              {m.pos ? <TrendingUp size={10} strokeWidth={2.5} /> : <TrendingDown size={10} strokeWidth={2.5} />}
+              {m.chg}
+            </div>
           </div>
         ))}
       </div>
@@ -94,7 +108,9 @@ export default function HomeScreen() {
             <div>
               <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 700, color: "var(--text)", display: "flex", alignItems: "center", gap: 8 }}>
                 {p.pair}
-                <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 6, background: p.type === "RISE" ? "rgba(0,229,176,0.15)" : "rgba(255,77,106,0.15)", color: p.type === "RISE" ? "var(--brand)" : "var(--red)", fontFamily: "'Syne', sans-serif" }}>{p.type}</span>
+                <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 6, background: p.type === "RISE" ? "rgba(0,229,176,0.15)" : "rgba(255,77,106,0.15)", color: p.type === "RISE" ? "var(--brand)" : "var(--red)", fontFamily: "'Syne', sans-serif", display: "flex", alignItems: "center", gap: 3 }}>
+                  {p.type === "RISE" ? <TrendingUp size={9} strokeWidth={2.5} /> : <TrendingDown size={9} strokeWidth={2.5} />} {p.type}
+                </span>
               </div>
               <div style={{ fontSize: 12, color: "var(--sub)", marginTop: 2 }}>Stake ${p.stake} · Exp {fmt(p.exp)}</div>
             </div>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Home, LineChart, Trophy, Crown, User } from "lucide-react";
 import HomeScreen from "@/pages/HomeScreen";
 import ChartScreen from "@/pages/ChartScreen";
 import PropScreen from "@/pages/PropScreen";
@@ -8,12 +9,12 @@ import LoginScreen from "@/pages/LoginScreen";
 
 type Tab = "home" | "charts" | "prop" | "premium" | "profile";
 
-const navItems: { id: Tab; icon: string; label: string }[] = [
-  { id: "home", icon: "🏠", label: "Home" },
-  { id: "charts", icon: "📊", label: "Charts" },
-  { id: "prop", icon: "🏆", label: "Prop" },
-  { id: "premium", icon: "💳", label: "Premium" },
-  { id: "profile", icon: "👤", label: "Profile" },
+const navItems: { id: Tab; Icon: React.FC<{ size?: number; strokeWidth?: number }>; label: string }[] = [
+  { id: "home", Icon: Home, label: "Home" },
+  { id: "charts", Icon: LineChart, label: "Charts" },
+  { id: "prop", Icon: Trophy, label: "Prop" },
+  { id: "premium", Icon: Crown, label: "Premium" },
+  { id: "profile", Icon: User, label: "Profile" },
 ];
 
 export default function App() {
@@ -37,16 +38,25 @@ export default function App() {
       {activeTab === "profile" && <ProfileScreen />}
 
       <div className="bottom-nav">
-        {navItems.map((item) => (
-          <div
-            key={item.id}
-            className={`nav-item${activeTab === item.id ? " active" : ""}`}
-            onClick={() => setActiveTab(item.id)}
-          >
-            <div className="nav-icon">{item.icon}</div>
-            <div className="nav-label">{item.label}</div>
-          </div>
-        ))}
+        {navItems.map(({ id, Icon, label }) => {
+          const active = activeTab === id;
+          return (
+            <div
+              key={id}
+              className={`nav-item${active ? " active" : ""}`}
+              onClick={() => setActiveTab(id)}
+            >
+              <Icon
+                size={22}
+                strokeWidth={active ? 2.2 : 1.6}
+                color={active ? "var(--brand)" : "var(--dim)"}
+                style={active ? { filter: "drop-shadow(0 0 6px var(--brand))" } : undefined}
+              />
+              <div className="nav-label">{label}</div>
+              {active && <div className="nav-dot" />}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

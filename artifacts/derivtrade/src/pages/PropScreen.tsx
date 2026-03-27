@@ -1,8 +1,10 @@
+import { Info, Medal, Target, ShieldAlert } from "lucide-react";
+
 const tiers = [
-  { icon: "🥉", size: "$10,000", rules: "8% target · 5% daily DD · 30 days", price: "$30", badge: null },
-  { icon: "🥈", size: "$25,000", rules: "8% target · 5% daily DD · 30 days", price: "$59", badge: "POPULAR" },
-  { icon: "🥇", size: "$50,000", rules: "8% target · 5% daily DD · 30 days", price: "$99", badge: null },
-  { icon: "💎", size: "$100,000", rules: "8% target · 5% daily DD · 30 days", price: "$179", badge: null },
+  { Icon: Medal, iconColor: "#CD7F32", size: "$10,000", rules: "8% target · 5% daily DD · 30 days", price: "$30", badge: null },
+  { Icon: Medal, iconColor: "#C0C0C0", size: "$25,000", rules: "8% target · 5% daily DD · 30 days", price: "$59", badge: "POPULAR" },
+  { Icon: Medal, iconColor: "#FFD700", size: "$50,000", rules: "8% target · 5% daily DD · 30 days", price: "$99", badge: null },
+  { Icon: ShieldAlert, iconColor: "var(--blue)", size: "$100,000", rules: "8% target · 5% daily DD · 30 days", price: "$179", badge: null },
 ];
 
 const progressItems = [
@@ -19,13 +21,17 @@ export default function PropScreen() {
         <div style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, fontSize: 20, color: "var(--text)" }}>
           Deriv<span style={{ color: "var(--brand)" }}>Prop</span>
         </div>
-        <div style={{ width: 32, height: 32, background: "var(--card2)", border: "1px solid var(--border)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14, cursor: "pointer" }}>ℹ️</div>
+        <div style={{ width: 32, height: 32, background: "var(--card2)", border: "1px solid var(--border)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
+          <Info size={16} color="var(--sub)" strokeWidth={1.8} />
+        </div>
       </div>
 
       {/* Hero */}
       <div style={{ margin: "0 16px 16px", background: "linear-gradient(135deg, #12142A 0%, #1A0E2E 100%)", border: "1px solid rgba(77,159,255,0.2)", borderRadius: 20, padding: 20, position: "relative", overflow: "hidden", textAlign: "center" }}>
         <div style={{ position: "absolute", top: -50, left: "50%", transform: "translateX(-50%)", width: 200, height: 200, background: "radial-gradient(circle, rgba(77,159,255,0.15) 0%, transparent 70%)", borderRadius: "50%" }} />
-        <div style={{ fontSize: 40, marginBottom: 8, position: "relative", zIndex: 1 }}>🏆</div>
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: 10, position: "relative", zIndex: 1 }}>
+          <Target size={42} color="var(--gold)" strokeWidth={1.4} style={{ filter: "drop-shadow(0 0 14px rgba(255,181,71,0.35))" }} />
+        </div>
         <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 18, fontWeight: 800, color: "var(--text)", marginBottom: 4, position: "relative", zIndex: 1 }}>Get Funded. Trade Big.</div>
         <div style={{ fontSize: 13, color: "var(--sub)", marginBottom: 16, position: "relative", zIndex: 1 }}>Pass our 2-phase challenge and trade with our capital</div>
         <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 36, fontWeight: 700, color: "var(--gold)", marginBottom: 4, textShadow: "0 0 20px rgba(255,181,71,0.4)", position: "relative", zIndex: 1 }}>$100,000</div>
@@ -44,8 +50,10 @@ export default function PropScreen() {
       <div className="sec-label" style={{ marginTop: 4 }}>Choose Your Challenge</div>
       <div style={{ padding: "0 16px" }}>
         {tiers.map((t, i) => (
-          <div key={i} style={{ background: "var(--card)", border: `1px solid ${t.badge ? "var(--brand)" : "var(--border)"}`, borderRadius: 16, padding: 16, marginBottom: 10, cursor: "pointer", display: "flex", alignItems: "center", gap: 14, ...(t.badge ? { background: "rgba(0,229,176,0.04)" } : {}) }}>
-            <div style={{ width: 44, height: 44, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, background: "var(--card2)", flexShrink: 0 }}>{t.icon}</div>
+          <div key={i} style={{ background: t.badge ? "rgba(0,229,176,0.04)" : "var(--card)", border: `1px solid ${t.badge ? "var(--brand)" : "var(--border)"}`, borderRadius: 16, padding: 16, marginBottom: 10, cursor: "pointer", display: "flex", alignItems: "center", gap: 14 }}>
+            <div style={{ width: 44, height: 44, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", background: "var(--card2)", flexShrink: 0 }}>
+              <t.Icon size={22} color={t.iconColor} strokeWidth={1.8} />
+            </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 16, fontWeight: 800, color: "var(--text)" }}>{t.size}</div>
               <div style={{ fontSize: 11, color: "var(--sub)", marginTop: 2 }}>{t.rules}</div>
