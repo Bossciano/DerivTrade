@@ -12,8 +12,8 @@ const markets = [
 export default function HomeScreen() {
   const [activeMarket, setActiveMarket] = useState(0);
   const [positions, setPositions] = useState([
-    { pair: "EUR/USD", type: "RISE", stake: 10, exp: 204, pnl: 18.4, pct: 62 },
-    { pair: "V 75", type: "FALL", stake: 25, exp: 491, pnl: -6.2, pct: 35 },
+    { pair: "EUR/USD", type: "LONG", stake: 10, exp: 204, pnl: 18.4, pct: 62 },
+    { pair: "V 75", type: "SHORT", stake: 25, exp: 491, pnl: -6.2, pct: 35 },
   ]);
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function HomeScreen() {
       setPositions(prev => prev.map(p => ({
         ...p,
         exp: Math.max(0, p.exp - 1),
-        pnl: +(p.pnl + (p.type === "RISE" ? 1 : -1) * (Math.random() - 0.45) * 0.4).toFixed(2),
+        pnl: +(p.pnl + (p.type === "LONG" ? 1 : -1) * (Math.random() - 0.45) * 0.4).toFixed(2),
         pct: Math.min(95, Math.max(5, p.pct + (Math.random() - 0.4) * 1.2)),
       })));
     }, 1000);
@@ -108,8 +108,8 @@ export default function HomeScreen() {
             <div>
               <div style={{ fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 700, color: "var(--text)", display: "flex", alignItems: "center", gap: 8 }}>
                 {p.pair}
-                <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 6, background: p.type === "RISE" ? "rgba(0,229,176,0.15)" : "rgba(255,77,106,0.15)", color: p.type === "RISE" ? "var(--brand)" : "var(--red)", fontFamily: "'Syne', sans-serif", display: "flex", alignItems: "center", gap: 3 }}>
-                  {p.type === "RISE" ? <TrendingUp size={9} strokeWidth={2.5} /> : <TrendingDown size={9} strokeWidth={2.5} />} {p.type}
+                <span style={{ fontSize: 9, fontWeight: 700, padding: "2px 7px", borderRadius: 6, background: p.type === "LONG" ? "rgba(0,229,176,0.15)" : "rgba(255,77,106,0.15)", color: p.type === "LONG" ? "var(--brand)" : "var(--red)", fontFamily: "'Syne', sans-serif", display: "flex", alignItems: "center", gap: 3 }}>
+                  {p.type === "LONG" ? <TrendingUp size={9} strokeWidth={2.5} /> : <TrendingDown size={9} strokeWidth={2.5} />} {p.type}
                 </span>
               </div>
               <div style={{ fontSize: 12, color: "var(--sub)", marginTop: 2 }}>Stake ${p.stake} · Exp {fmt(p.exp)}</div>

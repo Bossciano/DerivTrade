@@ -19,7 +19,7 @@ export default function ChartScreen({ onNavigate }: Props) {
   const [stake, setStake] = useState("$5");
   const [tradeResult, setTradeResult] = useState<null | { type: string }>(null);
 
-  const handleTrade = (type: "Rise" | "Fall") => {
+  const handleTrade = (type: "Long" | "Short") => {
     setTradeResult({ type });
     setTimeout(() => setTradeResult(null), 2500);
   };
@@ -90,8 +90,8 @@ export default function ChartScreen({ onNavigate }: Props) {
 
       {/* Trade result toast */}
       {tradeResult && (
-        <div style={{ margin: "0 16px 10px", padding: "12px 16px", background: tradeResult.type === "Rise" ? "rgba(0,229,176,0.12)" : "rgba(255,77,106,0.12)", border: `1px solid ${tradeResult.type === "Rise" ? "rgba(0,229,176,0.3)" : "rgba(255,77,106,0.3)"}`, borderRadius: 12, textAlign: "center", fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 700, color: tradeResult.type === "Rise" ? "var(--brand)" : "var(--red)", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-          {tradeResult.type === "Rise" ? <TrendingUp size={16} strokeWidth={2.5} /> : <TrendingDown size={16} strokeWidth={2.5} />}
+        <div style={{ margin: "0 16px 10px", padding: "12px 16px", background: tradeResult.type === "Long" ? "rgba(0,229,176,0.12)" : "rgba(255,77,106,0.12)", border: `1px solid ${tradeResult.type === "Long" ? "rgba(0,229,176,0.3)" : "rgba(255,77,106,0.3)"}`, borderRadius: 12, textAlign: "center", fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 700, color: tradeResult.type === "Long" ? "var(--brand)" : "var(--red)", display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+          {tradeResult.type === "Long" ? <TrendingUp size={16} strokeWidth={2.5} /> : <TrendingDown size={16} strokeWidth={2.5} />}
           {tradeResult.type} order placed! Stake: {stake}
         </div>
       )}
@@ -100,10 +100,10 @@ export default function ChartScreen({ onNavigate }: Props) {
       <div style={{ margin: "0 16px 12px", background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, padding: 16 }}>
         <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
           <div style={{ flex: 1, padding: 8, borderRadius: 10, fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 700, textAlign: "center", cursor: "pointer", background: "rgba(0,229,176,0.12)", color: "var(--brand)", border: "1px solid rgba(0,229,176,0.3)", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-            <TrendingUp size={14} strokeWidth={2.5} /> Rise
+            <TrendingUp size={14} strokeWidth={2.5} /> Long
           </div>
           <div style={{ flex: 1, padding: 8, borderRadius: 10, fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 700, textAlign: "center", cursor: "pointer", background: "rgba(255,77,106,0.12)", color: "var(--red)", border: "1px solid rgba(255,77,106,0.3)", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-            <TrendingDown size={14} strokeWidth={2.5} /> Fall
+            <TrendingDown size={14} strokeWidth={2.5} /> Short
           </div>
         </div>
 
@@ -134,11 +134,11 @@ export default function ChartScreen({ onNavigate }: Props) {
         </div>
 
         <div style={{ display: "flex", gap: 10, marginTop: 14 }}>
-          <button onClick={() => handleTrade("Rise")} style={{ flex: 1, padding: 13, background: "var(--brand)", color: "#000", border: "none", borderRadius: 12, fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 800, cursor: "pointer", boxShadow: "0 4px 24px var(--brand-glow)", display: "flex", alignItems: "center", justifyContent: "center", gap: 7 }}>
-            <TrendingUp size={16} strokeWidth={2.5} /> Rise
+          <button onClick={() => handleTrade("Long")} style={{ flex: 1, padding: 13, background: "var(--brand)", color: "#000", border: "none", borderRadius: 12, fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 800, cursor: "pointer", boxShadow: "0 4px 24px var(--brand-glow)", display: "flex", alignItems: "center", justifyContent: "center", gap: 7 }}>
+            <TrendingUp size={16} strokeWidth={2.5} /> Long
           </button>
-          <button onClick={() => handleTrade("Fall")} style={{ flex: 1, padding: 13, background: "var(--red)", color: "#fff", border: "none", borderRadius: 12, fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 800, cursor: "pointer", boxShadow: "0 4px 24px var(--red-glow)", display: "flex", alignItems: "center", justifyContent: "center", gap: 7 }}>
-            <TrendingDown size={16} strokeWidth={2.5} /> Fall
+          <button onClick={() => handleTrade("Short")} style={{ flex: 1, padding: 13, background: "var(--red)", color: "#fff", border: "none", borderRadius: 12, fontFamily: "'Syne', sans-serif", fontSize: 14, fontWeight: 800, cursor: "pointer", boxShadow: "0 4px 24px var(--red-glow)", display: "flex", alignItems: "center", justifyContent: "center", gap: 7 }}>
+            <TrendingDown size={16} strokeWidth={2.5} /> Short
           </button>
         </div>
       </div>
