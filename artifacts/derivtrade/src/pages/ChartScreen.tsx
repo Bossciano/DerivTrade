@@ -2,6 +2,12 @@ import { useState } from "react";
 import { TrendingUp, TrendingDown, ChevronDown } from "lucide-react";
 import DerivChart from "@/components/DerivChart";
 
+const INDICATORS = [
+  { key: "ma20", label: "MA 20", color: "rgba(0,229,176,0.9)" },
+  { key: "ma50", label: "MA 50", color: "rgba(255,181,71,0.9)" },
+  { key: "rsi",  label: "RSI",   color: "rgba(77,159,255,0.9)" },
+] as const;
+
 const TIMEFRAMES = ["1m", "5m", "15m", "1h", "4h", "1D"];
 const STAKES = ["$5", "$10", "$25", "$50", "MAX"];
 
@@ -53,6 +59,10 @@ export default function ChartScreen({ onNavigate }: Props) {
   const [pairCat, setPairCat]     = useState("Forex");
   const [openCat, setOpenCat]     = useState<string | null>(null);
   const [tradeResult, setTradeResult] = useState<null | { type: string }>(null);
+  const [indicators, setIndicators]   = useState({ ma20: false, ma50: false, rsi: false });
+
+  const toggleIndicator = (key: "ma20" | "ma50" | "rsi") =>
+    setIndicators(prev => ({ ...prev, [key]: !prev[key] }));
 
   const handleTrade = (type: "Long" | "Short") => {
     setTradeResult({ type });
@@ -156,29 +166,56 @@ export default function ChartScreen({ onNavigate }: Props) {
         })}
       </div>
 
-      {/* Timeframe bar */}
-      <div style={{ display: "flex", gap: 4, padding: "12px 16px 8px" }}>
-        {TIMEFRAMES.map(t => (
-          <button
-            key={t}
-            onClick={() => setTf(t)}
-            style={{
-              padding: "5px 11px", borderRadius: 8,
-              fontFamily: "'Syne', sans-serif", fontSize: 11, fontWeight: 700,
-              color: tf === t ? "var(--brand)" : "var(--sub)",
-              cursor: "pointer",
-              background: tf === t ? "rgba(0,229,176,0.12)" : "transparent",
-              border: tf === t ? "1px solid rgba(0,229,176,0.25)" : "1px solid transparent",
-            }}
-          >
-            {t}
-          </button>
-        ))}
+      {/* Timeframe + Indicator toolbar */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px 8px" }}>
+        {/* Timeframes */}
+        <div style={{ display: "flex", gap: 4 }}>
+          {TIMEFRAMES.map(t => (
+            <button
+              key={t}
+              onClick={() => setTf(t)}
+              style={{
+                padding: "5px 10px", borderRadius: 8,
+                fontFamily: "'Syne', sans-serif", fontSize: 11, fontWeight: 700,
+                color: tf === t ? "var(--brand)" : "var(--sub)",
+                cursor: "pointer",
+                background: tf === t ? "rgba(0,229,176,0.12)" : "transparent",
+                border: tf === t ? "1px solid rgba(0,229,176,0.25)" : "1px solid transparent",
+              }}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+
+        {/* Indicator toggles */}
+        <div style={{ display: "flex", gap: 5 }}>
+          {INDICATORS.map(ind => {
+            const on = indicators[ind.key];
+            return (
+              <button
+                key={ind.key}
+                onClick={() => toggleIndicator(ind.key)}
+                style={{
+                  padding: "4px 9px", borderRadius: 7,
+                  fontFamily: "'Space Mono', monospace", fontSize: 10, fontWeight: 700,
+                  cursor: "pointer",
+                  color: on ? ind.color : "var(--dim)",
+                  background: on ? `color-mix(in srgb, ${ind.color} 12%, transparent)` : "var(--card)",
+                  border: on ? `1px solid color-mix(in srgb, ${ind.color} 40%, transparent)` : "1px solid var(--border)",
+                  transition: "all 0.15s",
+                }}
+              >
+                {ind.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Live Chart */}
-      <div style={{ margin: "0 16px", height: 300, background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden" }}>
-        <DerivChart symbol={symbol} interval={tf} />
+      {/* Live Chart — taller when RSI is active */}
+      <div style={{ margin: "0 16px", height: indicators.rsi ? 380 : 280, background: "var(--card)", border: "1px solid var(--border)", borderRadius: 16, overflow: "hidden", transition: "height 0.25s ease" }}>
+        <DerivChart symbol={symbol} interval={tf} indicators={indicators} />
       </div>
 
       {/* Trade result toast */}
