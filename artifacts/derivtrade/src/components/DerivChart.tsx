@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { createChart, ColorType } from "lightweight-charts";
+import { createChart, ColorType, CandlestickSeries } from "lightweight-charts";
 
 interface Props {
   symbol: string;
@@ -62,7 +62,7 @@ export default function DerivChart({ symbol, interval }: Props) {
       },
     });
 
-    const series = chart.addCandlestickSeries({
+    const series = chart.addSeries(CandlestickSeries, {
       upColor: "#00E5B0",
       downColor: "#FF4D6A",
       borderVisible: false,
